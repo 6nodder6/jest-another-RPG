@@ -1,3 +1,4 @@
+const Enemy = require('../lib/Enemy.js');
 const Player = require('../lib/Player.js');
 
 const Potion = require('../lib/Potion.js')
@@ -69,4 +70,40 @@ test('subtracts health from the palyer', () => {
     expect(player.health).toBe(0);
 });
 
+test('gets players attack value', () => {
+    const player = new Player('Ian');
+    player.strength = 10;
 
+    expect(player.getAttackValue()).toBeGreaterThanOrEqual(5);
+    expect(player.getAttackValue()).toBeLessThanOrEqual(15);
+});
+
+test('adds a potion to the inventory', () => {
+    const player = new Player('Ian');
+
+    const oldCount = player.inventory.length;
+
+
+    player.addPotion(new Potion());
+
+    expect(player.inventory.length).toBeGreaterThan(oldCount);
+});
+
+test('uses a potion from inventory', () => {
+    const player = new Player('Ian');
+
+    player.inventory = [new Potion(), new Potion(), new Potion()];
+
+    const oldCount = player.inventory.length;
+
+    player.usePotion(1);
+    expect(player.inventory.length).toBeLessThan(oldCount);
+});
+
+
+test('gets a description of the enemy', () =>{
+    const enemy = new Enemy('goblin', 'sword');
+
+    expect(enemy.getDescription()).toEqual(expect.stringContaining('goblin'));
+    expect(enemy.getDescription()).toEqual(expect.stringContaining('sword'));
+});
